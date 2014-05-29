@@ -7,13 +7,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    # get the params from the view
+    #@all_ratings = ['G', 'PG', 'PG-13', 'R']
+    @all_ratings = Movie.find(:all, :select => 'rating').map(&:rating).uniq.sort
     if params[:sort] == "release_date"
       @movies = Movie.find(:all, :order => "release_date")
     elsif params[:sort] == "title"
       @movies = Movie.find(:all, :order => "title")
+    elsif params[:ratings]
+      @movies = Movie.where(:rating => params[:ratings].keys)
+      @selected_ratings = params[:ratings]
     else
-      @movies = Movie.all
+      @movies = Movie.all 
     end
 
   end
@@ -46,8 +50,6 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-  def sort_by_release_date
-    @movies = Movie.find(:all, :order => "release_date")
-  end
+  
 
 end
