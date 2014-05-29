@@ -7,6 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def index
+    # get the params from the view
     if params[:sort] == "release_date"
       @movies = Movie.find(:all, :order => "release_date")
     elsif params[:sort] == "title"
